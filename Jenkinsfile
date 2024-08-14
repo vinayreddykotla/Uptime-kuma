@@ -17,6 +17,7 @@ pipeline{
             steps {
                 sh "npm install"
             }
+            
         }
         stage("Sonarqube Analysis "){
             steps{
