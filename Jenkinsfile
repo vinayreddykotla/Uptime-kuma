@@ -1,8 +1,8 @@
 pipeline{
     agent any
     tools {
-        jdk 'jdk17'
-        nodejs 'node18'
+        jdk 'jdk22'
+        nodejs 'node22'
     }
     environment {
         SCANNER_HOME=tool 'sonar-scanner'
@@ -17,9 +17,8 @@ pipeline{
             steps {
                 sh "npm install"
             }
-            
         }
-        stage("Sonarqube Analysis "){
+        stage("Sonarqube Analysis"){
             steps{
                 withSonarQubeEnv('sonar-server') {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Chatbot \
@@ -27,7 +26,7 @@ pipeline{
                 }
             }
         }
-        stage('Sonar-quality-gate') {
+        stage('sonar-quality-gate') {
             steps {
                 script{
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
