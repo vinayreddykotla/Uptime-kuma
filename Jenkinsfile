@@ -1,8 +1,8 @@
 pipeline{
     agent any
     tools {
-        jdk 'jdk22'
-        nodejs 'node22'
+        jdk 'jdk17'
+        nodejs 'node18'
     }
     environment {
         SCANNER_HOME=tool 'sonar-scanner'
@@ -21,8 +21,8 @@ pipeline{
         stage("Sonarqube Analysis"){
             steps{
                 withSonarQubeEnv('sonar-server') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Chatbot \
-                    -Dsonar.projectKey=Chatbot '''
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=uptkuma \
+                    -Dsonar.projectKey=uptkuma '''
                 }
             }
         }
@@ -47,7 +47,7 @@ pipeline{
         stage("Docker Build & Push"){
             steps{
                 script{
-                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
+                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker', url: 'https://hub.docker.com'){   
                        sh "docker build -t uptime ."
                        sh "docker tag uptime vinayreddykotla/uptime:latest "
                        sh "docker push vinayreddykotla/uptime:latest "
